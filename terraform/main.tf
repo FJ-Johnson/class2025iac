@@ -70,11 +70,11 @@ resource "aws_security_group" "web_sg" {
 
 
 resource "aws_instance" "web-node" {
-  ami                    = var.project_ami
-  instance_type          = var.project_instance_type
-  subnet_id              = var.project_subnet
-  vpc_security_group_ids = [aws_security_group.web_sg.id]
-  key_name               =  var.project_keyname
+  ami                    = "ami-0b2084c407b36a444"
+  instance_type          = "t3.micro"
+  subnet_id              = "subnet-058d1e72b7700555a"
+  vpc_security_group_ids = ["sg-0524aa2c6d74451fd"]
+  key_name               =  "BlackDot"
 
   tags = {
     Name = "web-node"
@@ -129,11 +129,11 @@ resource "aws_security_group" "python_sg" {
 
 
 resource "aws_instance" "python-node" {
-  ami                    = var.project_ami
-  instance_type          = var.project_instance_type
-  subnet_id              = var.project_subnet
-  vpc_security_group_ids = [aws_security_group.python_sg.id]
-  key_name               =  var.project_keyname
+  ami                    = "ami-082feeb3a65bc35f7"
+  instance_type          = t3.micro
+  subnet_id              = "subnet-058d1e72b7700555a"
+  vpc_security_group_ids = ["sg-0524aa2c6d74451fd"]
+  key_name               =  "BlackDot"
 
   tags = {
     Name = "python-node"
@@ -188,11 +188,11 @@ resource "aws_security_group" "java_sg" {
 
 
 resource "aws_instance" "java-node" {
-  ami                    = var.project_ami
-  instance_type          = var.project_instance_type
-  subnet_id              = var.project_subnet
-  vpc_security_group_ids = [aws_security_group.java_sg.id]
-  key_name               =  var.project_keyname
+  ami                    = "ami-0c8a0224ec633ec78"
+  instance_type          = "t3.micro"
+  subnet_id              = "subnet-058d1e72b7700555a"
+  vpc_security_group_ids = ["sg-0524aa2c6d74451fd"]
+  key_name               =  "BlackDot"
 
   tags = {
     Name = "java-node"
