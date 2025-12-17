@@ -25,7 +25,7 @@ source "amazon-ebs" "nginx-git" {
 
 
 #-----------------------------
-# source: how we build the AMI For Nginx and GIT 
+# source: how we build the AMI For Java and GIT 
 #-----------------------------
 
 source "amazon-ebs" "java-git" {
@@ -37,6 +37,18 @@ source "amazon-ebs" "java-git" {
     ami_virtualization_type  = "hvm"
 }
 
+#-----------------------------
+# source: how we build the AMI For Python and GIT 
+#-----------------------------
+
+source "amazon-ebs" "python-git" {
+    region = "eu-west-1"
+    instance_type = "t3.micro"
+    ssh_username = "ec2-user"
+    source_ami  = "ami-09c54d172e7aa3d9a"
+    ami_name = "python-git-by-packer-v2"
+    ami_virtualization_type  = "hvm"
+}
 
 #------------------------------------
 # build: source + provisioning to do 
@@ -85,5 +97,23 @@ build  {
 
 }
 
+build  {
+    name  = "python-git-ami-build"
+    sources = [
+        "source.amazon-ebs.python-git"
+    ]
 
+    provisioner "shell" {
+        inline = [
+            "sudo yum update -y",
+            "sudo yum install python3 -y",
+            "sudo yum install git -y"
+        ]
+    }
+
+    post-processor "shell-local" {
+        inline = ["echo 'AMI build is finished For Python' "]
+    }
+
+}
 
