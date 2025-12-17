@@ -86,7 +86,7 @@ resource "aws_instance" "web-node" {
 resource "aws_security_group" "python_sg" {
 
   name        = "python-sg"
-  description = "Allow SSH and Port 9000  inbound, all outbound"
+  description = "Allow SSH and Port 8080  inbound, all outbound"
   vpc_id      = var.project_vpc
 
 
@@ -100,11 +100,11 @@ resource "aws_security_group" "python_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # inbound 9000 (app)
+  # inbound 8080 (app)
   ingress {
-    description = "Python App port 9000"
-    from_port   = 9000
-    to_port     = 9000
+    description = "Python App port 8080"
+    from_port   = 8080
+    to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -137,6 +137,65 @@ resource "aws_instance" "python-node" {
 
   tags = {
     Name = "python-node"
+  }
+}
+
+# Java backend setup
+
+resource "aws_security_group" "java_sg" {
+
+  name        = "java-sg"
+  description = "Allow SSH and Port 9090  inbound, all outbound"
+  vpc_id      = var.project_vpc
+
+
+  # inbound SSH
+
+  ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # inbound 9090 (app)
+  ingress {
+    description = "Java App port 9090"
+    from_port   = 9090
+    to_port     = 9090
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Allow all outbound traffic
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "java-app-security_group"
+  }
+
+}
+
+#-------------------------
+# Java EC2 Instance
+# ------------------------
+
+
+resource "aws_instance" "java-node" {
+  ami                    = var.project_ami
+  instance_type          = var.project_instance_type
+  subnet_id              = var.project_subnet
+  vpc_security_group_ids = [aws_security_group.java_sg.id]
+  key_name               =  var.project_keyname
+
+  tags = {
+    Name = "java-node"
   }
 }
 
