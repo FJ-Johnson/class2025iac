@@ -130,7 +130,7 @@ resource "aws_security_group" "python_sg" {
 
 resource "aws_instance" "python-node" {
   ami                    = "ami-082feeb3a65bc35f7"
-  instance_type          = t3.micro
+  instance_type          = "t3.micro"
   subnet_id              = "subnet-058d1e72b7700555a"
   vpc_security_group_ids = ["sg-0524aa2c6d74451fd"]
   key_name               =  "BlackDot"
